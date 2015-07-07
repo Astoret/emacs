@@ -5,6 +5,8 @@
 (ergoemacs-theme-option-off '(apps apps-apps apps-punctuation apps-swap))
 (ergoemacs-mode 1)
 
+(add-hook 'org-mode-hook 'turn-on-visual-line-mode)
+
 (setq make-backup-files         nil) ; Don't want any backup files
 (setq auto-save-list-file-name  nil) ; Don't want any .saves files
 (setq auto-save-default         nil) ; Don't want any auto saving
@@ -23,7 +25,7 @@
 (package-initialize) ;; You might already have this line
 
 (require 'ido)
-(setq emacs-persistence-directory (concat user-emacs-directory ".persistence/"))
+(setq emacs-persistence-directory (concat user-emacs-directory "~/.emacs.d/.persistence/"))
 (unless (file-exists-p emacs-persistence-directory)
     (make-directory emacs-persistence-directory t))
 (setq ido-save-directory-list-file (concat emacs-persistence-directory "ido-last"))
@@ -59,20 +61,23 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(delete-selection-mode t)
- '(initial-scratch-message #(";; This buffer is for notes you don't want to save, and for Lisp evaluation.
-;; If you want to create a file, visit that file with ⇧Shift+Ctrl+O,
-;; then enter the text in that file's own buffer." 131 137 (face ergoemacs-pretty-key) 138 142 (face ergoemacs-pretty-key) 143 144 (face ergoemacs-pretty-key)))
- '(org-CUA-compatible t)
- '(org-special-ctrl-a/e t)
- '(org-support-shift-select t)
- '(recentf-menu-before "Close")
+ '(ergoemacs-theme-options (quote ((apps-swap off) (apps-punctuation off) (apps-apps off) (apps off))))
+ '(org-CUA-compatible nil)
+ '(org-replace-disputed-keys t)
  '(recentf-mode t)
- '(scroll-error-top-bottom t)
  '(scroll-preserve-screen-position t)
- '(set-mark-command-repeat-pop t))
+ '(shift-select-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(require 'langtool)
+(setq langtool-language-tool-jar "~/dev/LanguageTool-2.9/languagetool-commandline.jar")
+(global-set-key "\C-x4w" 'langtool-check)
+(global-set-key "\C-x4W" 'langtool-check-done)
+(global-set-key "\C-x4l" 'langtool-switch-default-language)
+(global-set-key "\C-x44" 'langtool-show-message-at-point)
+(global-set-key "\C-x4c" 'langtool-correct-buffer)
